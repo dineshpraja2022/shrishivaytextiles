@@ -1,0 +1,76 @@
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap");
+
+@import "tailwindcss";
+* {
+  font-family: "Outfit", sans-serif;
+}
+
+@theme {
+  --color-primary: #4b0082;
+}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+  .transform-style-preserve-3d {
+    transform-style: preserve-3d;
+  }
+  .animate-truck-move {
+    animation: truckMove 10s infinite linear;
+  }
+  .animate-package-bounce {
+    animation: packageBounce 10s infinite ease-in-out;
+  }
+
+  @keyframes truckMove {
+    0% {
+      transform: translateX(-150%) rotateY(0deg);
+    }
+    20% {
+      transform: translateX(-50%) rotateY(0deg);
+    }
+    30% {
+      transform: translateX(-30%) rotateY(-30deg);
+    }
+    40% {
+      transform: translateX(0%) rotateY(0deg);
+    }
+    60% {
+      transform: translateX(0%) rotateY(0deg);
+    }
+    70% {
+      transform: translateX(30%) rotateY(30deg);
+    }
+    80% {
+      transform: translateX(50%) rotateY(0deg);
+    }
+    100% {
+      transform: translateX(150%) rotateY(0deg);
+    }
+  }
+
+  @keyframes packageBounce {
+    0%,
+    60%,
+    100% {
+      transform: translateY(0) scale(1);
+      opacity: 0;
+    }
+    30% {
+      transform: translateY(-50px) scale(1.2);
+      opacity: 1;
+    }
+    40% {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+  }
+}
