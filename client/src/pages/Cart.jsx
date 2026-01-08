@@ -245,7 +245,7 @@ const Cart = () => {
         ) : (
           cartArray.map((item) => {
             // Image URL handling
-            const BASE_URL = `${import.meta.env.VITE_BACKEND_URL}/uploads/`;
+            const BASE_URL = `${import.meta.env.VITE_VITE_URL}/uploads/`;
             let imageUrl = "";
             if (Array.isArray(item.images) && item.images.length > 0) {
               imageUrl = BASE_URL + item.images[0];

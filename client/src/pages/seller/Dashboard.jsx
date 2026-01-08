@@ -14,7 +14,7 @@ const Dashboard = () => {
     const fetchOrderStats = async () => {
       try {
         const token = localStorage.getItem("adminToken");
-        const response = await axios.get("/api/order/seller", {
+        const response = await axios.get("https://shrishivay-4.onrender.com/api/order/seller", {
           headers: { Authorization: `Bearer ${token}` },
         });
 

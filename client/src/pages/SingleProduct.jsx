@@ -53,7 +53,7 @@ const SingleProduct = () => {
                     : "border-gray-200 hover:border-indigo-400"}`}
               >
                 <img
-                  src={`http://localhost:5000/images/${img}`}
+                  src={`https://shrishivay-4.onrender.com/api/images/${img}`}
                   alt=""
                   className="w-20 h-20 object-cover"
                 />
@@ -65,7 +65,7 @@ const SingleProduct = () => {
           <div className="flex-1 rounded-2xl overflow-hidden border border-gray-200
                           shadow-lg shadow-blue-400/30 bg-white">
             <img
-              src={`http://localhost:5000/images/${thumbnail}`}
+              src={`https://shrishivay-4.onrender.com/api/images/${thumbnail}`}
               alt={product.name}
               className="w-full h-[420px] object-contain hover:scale-105 transition duration-500"
             />

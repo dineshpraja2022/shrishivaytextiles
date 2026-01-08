@@ -11,7 +11,7 @@ const Orderlist = () => {
   const fetchOrders = async () => {
     try {
       setLoading(true);
-      const res = await axios.get("/api/order/seller", { withCredentials: true });
+      const res = await axios.get("https://shrishivay-4.onrender.com/api/order/seller", { withCredentials: true });
       if (res.data.success === false) {
         toast.error(res.data.message || "Failed to fetch orders");
         setOrders([]);
@@ -40,7 +40,7 @@ const Orderlist = () => {
   // ✅ Ship Order
   const handleShipOrder = async (orderId) => {
     try {
-      const res = await axios.put(`/api/order/${orderId}/ship`, {}, { withCredentials: true });
+      const res = await axios.put(`https://shrishivay-4.onrender.com/api/order/${orderId}/ship`, {}, { withCredentials: true });
       if (res.data.success) {
         toast.success("Order marked as shipped!");
         const updatedOrder = res.data.order;

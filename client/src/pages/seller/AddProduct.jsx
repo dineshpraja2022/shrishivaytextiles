@@ -2,9 +2,10 @@ import { assets, categories } from "../../assets/assets";
 import { useContext, useState } from "react";
 import { AppContext } from "../../context/AppContext";
 import toast from "react-hot-toast";
-
+import axios from "axios";
 const AddProduct = () => {
   const { axios } = useContext(AppContext);
+
   const [files, setFiles] = useState([]);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -14,20 +15,47 @@ const AddProduct = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // 🔒 Basic validation
+    if (!name || !category || !price || !offerPrice) {
+      return toast.error("Please fill all required fields");
+    }
+
+    if (files.filter(Boolean).length === 0) {
+      return toast.error("Please upload at least one image");
+    }
+
     try {
       const formData = new FormData();
+
       formData.append("name", name);
       formData.append("description", description);
       formData.append("category", category);
       formData.append("price", price);
       formData.append("offerPrice", offerPrice);
-      for (let i = 0; i < files.length; i++) {
-        formData.append("image", files[i]);
-      }
 
-      const { data } = await axios.post("/api/product/add-product", formData);
+      // ✅ IMPORTANT: only valid files
+      files.forEach((file) => {
+        if (file) {
+          formData.append("image", file);
+        }
+      });
+
+    const { data } = await axios.post(
+  "/api/product/add-product",
+  formData,
+  {
+    withCredentials: true, // 🔥 cookie bhejne ke liye MUST
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  }
+);
+
       if (data.success) {
-        toast.success(data.message);
+        toast.success(data.message || "Product added successfully");
+
+        // 🔄 Reset form
         setName("");
         setDescription("");
         setCategory("");
@@ -35,10 +63,12 @@ const AddProduct = () => {
         setOfferPrice("");
         setFiles([]);
       } else {
-        toast.error(data.message);
+        toast.error(data.message || "Something went wrong");
       }
     } catch (error) {
-      toast.error(error.message);
+      toast.error(
+        error?.response?.data?.message || "Unauthorized or Server Error"
+      );
     }
   };
 
@@ -57,6 +87,7 @@ const AddProduct = () => {
           <label className="block text-lg font-medium text-gray-700 mb-3">
             Upload Images (Max 4)
           </label>
+
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-5">
             {Array(4)
               .fill("")
@@ -67,16 +98,17 @@ const AddProduct = () => {
                   className="border border-dashed border-indigo-300 bg-indigo-50/30 rounded-lg overflow-hidden cursor-pointer shadow-sm hover:shadow-lg transition"
                 >
                   <input
+                    type="file"
+                    accept="image/*"
+                    id={`image${index}`}
+                    hidden
                     onChange={(e) => {
                       const updatedFiles = [...files];
                       updatedFiles[index] = e.target.files[0];
                       setFiles(updatedFiles);
                     }}
-                    accept="image/*"
-                    type="file"
-                    id={`image${index}`}
-                    hidden
                   />
+
                   <img
                     src={
                       files[index]
@@ -93,97 +125,79 @@ const AddProduct = () => {
 
         {/* Product Name */}
         <div>
-          <label htmlFor="product-name" className="block text-base font-semibold text-gray-700">
+          <label className="block font-semibold text-gray-700">
             Product Name
           </label>
           <input
-            id="product-name"
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="Ex: Lead Rope,Horse Halter..."
-            className="w-full mt-2 px-4 py-2.5 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            placeholder="Ex: Lead Rope, Horse Halter"
+            className="w-full mt-2 px-4 py-2.5 border rounded-lg"
             required
           />
         </div>
 
-        {/* Product Description */}
+        {/* Description */}
         <div>
-          <label htmlFor="product-description" className="block text-base font-semibold text-gray-700">
+          <label className="block font-semibold text-gray-700">
             Product Description
           </label>
           <textarea
-            id="product-description"
             rows={4}
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder="Write details, specifications or features..."
-            className="w-full mt-2 px-4 py-2.5 border border-gray-300 rounded-lg shadow-sm resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full mt-2 px-4 py-2.5 border rounded-lg"
           />
         </div>
 
-        {/* Category Selection */}
+        {/* Category */}
         <div>
-          <label htmlFor="category" className="block text-base font-semibold text-gray-700">
+          <label className="block font-semibold text-gray-700">
             Select Category
           </label>
           <select
-            id="category"
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="w-full mt-2 px-4 py-2.5 border border-gray-300 rounded-lg shadow-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full mt-2 px-4 py-2.5 border rounded-lg"
             required
           >
             <option value="">Choose Category</option>
             {categories.map((cat, index) => (
-              <option value={cat.path} key={index}>
+              <option key={index} value={cat.path}>
                 {cat.path}
               </option>
             ))}
           </select>
         </div>
 
-        {/* Price and Offer Price */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <label htmlFor="product-price" className="block text-base font-semibold text-gray-700">
-              Product Price (₹)
-            </label>
-            <input
-              id="product-price"
-              type="number"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-              placeholder="Enter price"
-              className="w-full mt-2 px-4 py-2.5 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="offer-price" className="block text-base font-semibold text-gray-700">
-              Offer Price (₹)
-            </label>
-            <input
-              id="offer-price"
-              type="number"
-              value={offerPrice}
-              onChange={(e) => setOfferPrice(e.target.value)}
-              placeholder="Discounted price"
-              className="w-full mt-2 px-4 py-2.5 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              required
-            />
-          </div>
+        {/* Price */}
+        <div className="grid md:grid-cols-2 gap-6">
+          <input
+            type="number"
+            placeholder="Price"
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+            className="px-4 py-2.5 border rounded-lg"
+            required
+          />
+          <input
+            type="number"
+            placeholder="Offer Price"
+            value={offerPrice}
+            onChange={(e) => setOfferPrice(e.target.value)}
+            className="px-4 py-2.5 border rounded-lg"
+            required
+          />
         </div>
 
-        {/* Submit Button */}
-        <div className="text-center">
-          <button
-            type="submit"
-            className="inline-block w-full sm:w-auto px-10 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg shadow-md transition"
-          >
-            Add Product
-          </button>
-        </div>
+        {/* Button */}
+        <button
+          type="submit"
+          className="w-full py-3 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700"
+        >
+          Add Product
+        </button>
       </form>
     </div>
   );

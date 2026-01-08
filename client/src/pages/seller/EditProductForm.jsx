@@ -46,7 +46,7 @@ const EditProductForm = ({ product, isOpen, onClose, onSave, axios }) => {
         const imgData = new FormData();
         imgData.append("image", imageFile);
 
-        const uploadRes = await axios.post("/api/upload", imgData, {
+        const uploadRes = await axios.post("https://shrishivay-4.onrender.com/api/upload", imgData, {
           headers: { "Content-Type": "multipart/form-data" }
         });
 
@@ -60,7 +60,7 @@ const EditProductForm = ({ product, isOpen, onClose, onSave, axios }) => {
       }
 
       // Update product
-      const { data } = await axios.put(`/api/product/${product._id}`, {
+      const { data } = await axios.put(`https://shrishivay-4.onrender.com/api/product/${product._id}`, {
         name: formData.name,
         category: formData.category,
         offerPrice: formData.offerPrice,
@@ -125,7 +125,7 @@ const EditProductForm = ({ product, isOpen, onClose, onSave, axios }) => {
 
             {formData.image?.length > 0 && !imageFile && (
               <img
-                src={`http://localhost:5000/images/${formData.image[0]}`}
+                src={`https://shrishivay-4.onrender.com/api/images/${formData.image[0]}`}
                 alt="Current"
                 className="mt-2 h-20"
               />

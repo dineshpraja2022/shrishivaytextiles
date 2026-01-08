@@ -13,7 +13,7 @@ const SellerLogin = () => {
   const handleSubmit = async (e) => {
     try {
       e.preventDefault();
-      const { data } = await axios.post("/api/seller/login", {
+      const { data } = await axios.post("https://shrishivay-4.onrender.com/api/seller/login", {
         email,
         password,
       });

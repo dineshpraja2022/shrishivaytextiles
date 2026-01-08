@@ -37,7 +37,7 @@ const Navbar = () => {
 
   const logout = async () => {
     try {
-      const { data } = await axios.get("/api/user/logout", { withCredentials: true });
+      const { data } = await axios.get("https://shrishivay-4.onrender.com/api/user/logout", { withCredentials: true });
       if (data.success) {
         setUser(null);
         localStorage.removeItem("token");

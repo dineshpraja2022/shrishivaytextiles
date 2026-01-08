@@ -1,22 +1,26 @@
 import { useState } from "react";
 import { useAppContext } from "../context/appContext";
 import { toast } from "react-hot-toast";
+import api from "../api/axios";
 
 const Auth = () => {
   const [state, setState] = useState("login");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { setShowUserLogin, setUser, axios, navigate } = useAppContext();
+const { setShowUserLogin, setUser, navigate } = useAppContext();
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post(
-        `/api/user/${state}`,
-        { name, email, password },
-        { withCredentials: true } // ✅ important for cookies
-      );
+const { data } = await api.post(`/user/${state}`, {
+  name,
+  email,
+  password,
+});
+
+
 
       if (data.success) {
         toast.success(data.message);

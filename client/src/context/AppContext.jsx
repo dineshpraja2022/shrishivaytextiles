@@ -21,7 +21,7 @@ export const AppContextProvider = ({ children }) => {
   // ✅ Check seller status
   const fetchSeller = async () => {
     try {
-      const { data } = await axios.get("/api/seller/is-auth");
+      const { data } = await axios.get("https://shrishivay-4.onrender.com/api/seller/is-auth");
       setIsSeller(data.success);
     } catch {
       setIsSeller(false);
@@ -31,7 +31,7 @@ export const AppContextProvider = ({ children }) => {
   // ✅ Fetch user auth status + cart
   const fetchUser = async () => {
     try {
-      const { data } = await axios.get("/api/user/is-auth");
+      const { data } = await axios.get("https://shrishivay-4.onrender.com/api/user/is-auth");
       if (data.success) {
         setUser(data.user);
         setCartItems(data.user.cart || {});
@@ -46,7 +46,7 @@ export const AppContextProvider = ({ children }) => {
   // ✅ Fetch products
   const fetchProducts = async () => {
     try {
-      const { data } = await axios.get("/api/product/list");
+      const { data } = await axios.get("https://shrishivay-4.onrender.com/api/product/list");
       if (data.success) {
         setProducts(data.products);
       } else {
@@ -114,7 +114,7 @@ export const AppContextProvider = ({ children }) => {
   useEffect(() => {
     const updateCart = async () => {
       try {
-        const { data } = await axios.post("/api/cart/update", { cartItems });
+        const { data } = await axios.post("https://shrishivay-4.onrender.com/api/cart/update", { cartItems });
         if (!data.success) {
           toast.error(data.message);
         }

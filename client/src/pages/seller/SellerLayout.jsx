@@ -20,7 +20,7 @@ const sidebarLinks = [
 
   const logout = async () => {
     try {
-      const { data } = await axios.get("/api/seller/logout");
+      const { data } = await axios.get("https://shrishivay-4.onrender.com/api/seller/logout");
       if (data.success) {
         setIsSeller(false);
         toast.success("Logged out successfully");

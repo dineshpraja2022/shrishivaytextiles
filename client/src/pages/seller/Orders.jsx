@@ -25,7 +25,7 @@ const Orders = () => {
   const fetchOrders = async () => {
     try {
       setLoading(true);
-      const res = await axios.get("/api/order/seller", { withCredentials: true });
+      const res = await axios.get("https://shrishivay-4.onrender.com/api/order/seller", { withCredentials: true });
       if (res.data?.success === false) {
         toast.error(res.data.message || "Failed to fetch orders");
         setOrders([]);

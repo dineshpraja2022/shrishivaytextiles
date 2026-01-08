@@ -10,7 +10,7 @@ const MyOrders = () => {
   // Fetch user's orders
   const fetchOrders = async () => {
     try {
-      const { data } = await axios.get("/api/order/user");
+      const { data } = await axios.get("https://shrishivay-4.onrender.com/api/order/user");
       if (data.success) {
         setMyOrders(data.orders);
       } else {
@@ -247,7 +247,7 @@ const MyOrders = () => {
                           <img
                             src={
                               item?.product?.image && item.product.image.length > 0
-                                ? `http://localhost:5000/images/${item.product.image[0]}`
+                                ? `https://shrishivay-4.onrender.com/api/images/${item.product.image[0]}`
                                 : "/placeholder.png"
                             }
                             alt={item?.product?.name || "Product Image"}

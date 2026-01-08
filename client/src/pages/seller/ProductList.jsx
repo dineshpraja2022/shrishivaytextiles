@@ -10,7 +10,7 @@ const ProductList = () => {
 
   const toggleStock = async (id, inStock) => {
     try {
-      const { data } = await axios.post("/api/product/stock", { id, inStock });
+      const { data } = await axios.post("https://shrishivay-4.onrender.com/api/product/stock", { id, inStock });
       if (data.success) {
         fetchProducts();
         toast.success(data.message);
@@ -33,7 +33,7 @@ const ProductList = () => {
     if (!confirmDelete) return;
 
     try {
-      const { data } = await axios.delete(`/api/product/${id}`);
+      const { data } = await axios.delete(`https://shrishivay-4.onrender.com/api/product/${id}`);
       if (data.success) {
         fetchProducts();
         toast.success(data.message);
@@ -66,7 +66,7 @@ const ProductList = () => {
               <tr key={product._id} className="border-t hover:bg-gray-50">
                 <td className="px-6 py-4 flex items-center gap-4">
                   <img
-                    src={`http://localhost:5000/images/${product.image[0]}`}
+                    src={`https://shrishivay-4.onrender.com/api/images/${product.image[0]}`}
                     alt={product.name}
                     className="w-14 h-14 object-cover rounded border"
                   />
